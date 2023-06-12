@@ -115,10 +115,31 @@ export const updateUser = wrapper((req, res, next) => {
   res.send(user);
 });
 
+export const getAccessed = wrapper((req, res, next) => {
+  // Check if the id is in the query params
+  if (!req.params || !req.params.id) {
+    return res.status(400).send({ message: "Missing id in url params" });
+  }
+
+  const id = req.params.id;
+
+  // Again, I changed to search for the id instead of the name
+  const [user, _] = binarySearch(data, (user) => cmp(id, user.id));
+
+  // Check if the user exists
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  // Send the accessed count
+  res.send({ accessed: user._accessed });
+});
+
 export default {
   getUser,
   getUsers,
   createUser,
   deleteUser,
   updateUser,
+  getAccessed,
 };
