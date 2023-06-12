@@ -23,8 +23,11 @@ app.get("/", function (req, res) {
   res.send(`get users/:id </br>
   get users/ </br>
   post users/ </br>
-  delete users/ </br>
-  put users/ </br>
+  delete users/:id </br>
+  put users/:id </br>
+  get users/:id/access </br>
+  put users/:id/permission </br>
+  please read the readme.md file for more information, <a href="https://github.com/racs4/vagas">https://github.com/racs4/vagas</a>
   `);
 });
 

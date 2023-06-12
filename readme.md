@@ -1,3 +1,39 @@
+## Dev Notes
+
+A maioria dos testes encontra-se no controller de usuários em `./src/users/users.controller.js`. O teste 5 encontra-se no arquivo `./src/common/middleware.js`.
+
+Resolvi trocar a busca de nomes por ids, já que estes se auto incrementam e são únicos. Isso também deixa o código mais performático, já que não é necessário percorrer o array inteiro para encontrar um nome, podendo-se realizar uma busca binária que foi implementada neste código.
+
+As rotas da aplicação são as seguintes:
+
+- GET `/users` - Retorna todos os usuários
+- GET `/users/:id` - Retorna um usuário específico
+- POST `/users` - Cria um novo usuário, passe no body o `name` e o `job` do usuário.
+  ```json
+  {
+    "name": "John Doe",
+    "job": "Developer"
+  }
+  ```
+- PUT `/users/:id` - Atualiza um usuário específico, precisa passar uma chave `author` no header da requisição com o id do usuário que está executando o comando. Passe no body um objeto com os campos que serão atualizados, como no exemplo abaixo (note que só precisa passar os campos que serão alterados):
+
+  ```json
+  {
+    "name": "John Doe",
+    "job": "Developer"
+  }
+  ```
+- DELETE `/users/:id` - Deleta um usuário específico, precisa passar uma chave `author` no header da requisição com o id do usuário que está executando o comando.
+- GET `/users/:id/access` - Retorna quantas vezes um usuário foi lido.
+- PUT `/users/:id/permission` - Atualiza as permissões de um usuário, precisa passar um body com as novas permissões como no exemplo abaixo (note que só precisa passar as permissões que serão alteradas):
+
+  ```json
+  {
+    "update": true,
+    "erase": false
+  }
+  ```
+
 # Este é um teste para desenvolvedores
 
 # possui 5 testes
@@ -14,7 +50,7 @@ Fique a vontade para fazer modificaçoes nos serviços, comentários em código,
 
 ## teste1.js
 
-GET em /user 
+GET em /user
 
 Possuimos neste arquivo um serviço que faz uma busca no banco fake e retorna um registro.
 Este código funciona, mas é possivel melhorar.
@@ -40,4 +76,3 @@ Retorne quantas vezes determinado usuário foi lido no teste1.
 ## teste 6
 
 Definina uma forma de criar permissão para o usuario, defina se o usuário pode deletar ou atualizar usuários. Crie um middleware para validar essas permissões e adicione no teste4 e teste3.
-
