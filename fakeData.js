@@ -1,6 +1,6 @@
 export default [
   {
-    name: "João Oliveira",
+    name: "Rheidner",
     job: "Desenvolvedor",
     _accessed: 0,
     _permissions: {

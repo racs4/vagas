@@ -135,6 +135,49 @@ export const getAccessed = wrapper((req, res, next) => {
   res.send({ accessed: user._accessed });
 });
 
+export const updatePermission = wrapper((req, res, next) => {
+  // Check if the id is in the params
+  if (!req.body || !req.params.id) {
+    return res.status(400).send({ message: "Missing id in body" });
+  }
+
+  const id = req.params.id;
+
+  // Again, I changed to search for the id instead of the name
+  const [user, _] = binarySearch(data, (user) => cmp(id, user.id));
+
+  // Check if the user exists
+  if (!user) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  // Check if there is a body with a name or job
+  if (
+    !req.body ||
+    (req.body.erase === undefined && req.body.update === undefined)
+  ) {
+    return res.status(400).send({ message: "Missing permission in body" });
+  }
+
+  // Check if values are booleans
+  if (
+    (req.body.erase !== undefined && typeof req.body.erase !== "boolean") ||
+    (req.body.update !== undefined && typeof req.body.update !== "boolean")
+  ) {
+    return res.status(400).send({ message: "Permission must be a boolean" });
+  }
+
+  // Update the user
+  if (req.body.erase !== undefined) {
+    user._permissions.erase = req.body.erase;
+  }
+  if (req.body.update !== undefined) {
+    user._permissions.update = req.body.update;
+  }
+
+  res.send(user);
+});
+
 export default {
   getUser,
   getUsers,
@@ -142,4 +185,5 @@ export default {
   deleteUser,
   updateUser,
   getAccessed,
+  updatePermission,
 };
