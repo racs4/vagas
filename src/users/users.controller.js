@@ -48,7 +48,22 @@ export const getUsers = wrapper((req, res, next) => {
   res.send(data);
 });
 
+export const createUser = wrapper((req, res, next) => {
+  // Check if the name and job are in the body
+  if (!req.body || !req.body.name || !req.body.job) {
+    return res.status(400).send({ message: "Missing name or job in body" });
+  }
+
+  var name = req.body.name;
+  // (The referred error was here, the name of the variable was wrong)
+  var job = req.body.job;
+  var newUser = new User(name, job);
+  data.push(newUser);
+  res.send(newUser);
+});
+
 export default {
   getUser,
   getUsers,
+  createUser,
 };
