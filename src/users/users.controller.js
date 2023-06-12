@@ -83,9 +83,42 @@ export const deleteUser = wrapper((req, res, next) => {
   res.send({ message: "User deleted" });
 });
 
+export const updateUser = wrapper((req, res, next) => {
+  // Check if the name is in the query params
+  if (!req.params || !req.params.id) {
+    return res.status(400).send({ message: "Missing id in url params" });
+  }
+
+  const id = req.params.id;
+
+  // Again, I changed to search for the id instead of the name
+  const [user, index] = binarySearch(data, (user) => cmp(id, user.id));
+
+  // Check if the user exists
+  if (index === -1) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  // Check if there is a body with a name or job
+  if (!req.body || (!req.body.name && !req.body.job)) {
+    return res.status(400).send({ message: "Missing name or job in body" });
+  }
+
+  // Update the user
+  if (req.body.name) {
+    user.name = req.body.name;
+  }
+  if (req.body.job) {
+    user.job = req.body.job;
+  }
+
+  res.send(user);
+});
+
 export default {
   getUser,
   getUsers,
   createUser,
   deleteUser,
+  updateUser,
 };
