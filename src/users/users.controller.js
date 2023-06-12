@@ -62,8 +62,30 @@ export const createUser = wrapper((req, res, next) => {
   res.send(newUser);
 });
 
+export const deleteUser = wrapper((req, res, next) => {
+  // Check if the name is in the query params
+  if (!req.params || !req.params.id) {
+    return res.status(400).send({ message: "Missing id in url params" });
+  }
+
+  const id = req.params.id;
+  // Again, I changed to search for the id instead of the name
+  const [_, index] = binarySearch(data, (user) => cmp(id, user.id));
+
+  // Check if the user exists
+  if (index === -1) {
+    return res.status(404).send({ message: "User not found" });
+  }
+
+  // Delete the user
+  data.splice(index, 1);
+
+  res.send({ message: "User deleted" });
+});
+
 export default {
   getUser,
   getUsers,
   createUser,
+  deleteUser,
 };
